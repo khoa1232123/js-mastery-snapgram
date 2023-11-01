@@ -1,16 +1,22 @@
-import { useState } from "react";
-import "./globals.css";
+import { AuthLayout, SignInForm, SignUpForm } from "@/_auth";
+import { Home, RootLayout } from "@/_root";
 import { Route, Routes } from "react-router-dom";
-import { SignInForm, SignUpForm } from "./_auth";
+import "./globals.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <main>
       <Routes>
-        <Route path="/sign-in" element={<SignInForm />} />
-        <Route path="/sign-up" element={<SignUpForm />} />
+        {/* public routes */}
+        <Route element={<AuthLayout />}>
+          <Route path="/sign-in" element={<SignInForm />} />
+          <Route path="/sign-up" element={<SignUpForm />} />
+        </Route>
+
+        {/* private routes */}
+        <Route element={<RootLayout />}>
+          <Route index element={<Home />} />
+        </Route>
       </Routes>
     </main>
   );
