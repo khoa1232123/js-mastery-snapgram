@@ -62,6 +62,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  console.log({ user });
+
   const value: IContextType = {
     user,
     setUser,

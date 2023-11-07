@@ -4,7 +4,7 @@ import { Models } from "appwrite";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
-import { FileUploader } from "../shared";
+import { FileUploader, Loader } from "../shared";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -33,7 +33,7 @@ const PostForm = ({ post }: Props) => {
   const navigate = useNavigate();
   // 1. define your form
   const form = useForm<z.infer<typeof PostValidation>>({
-    resolver: zodResolver(SignInValidation),
+    resolver: zodResolver(PostValidation),
     defaultValues: {
       caption: post ? post?.caption : "",
       location: post ? post?.location : "",
@@ -43,11 +43,15 @@ const PostForm = ({ post }: Props) => {
   });
 
   // 2. define a submit handler
-  const onSubmit = async (values: z.infer<typeof PostValidation>) => {
+  const handleSubmit = async (values: z.infer<typeof PostValidation>) => {
+    console.log("onSubmit");
+
     const newPost = await createPost({
       ...values,
       userId: user.id,
     });
+
+    console.log({ newPost });
 
     if (!newPost) {
       return toast({
@@ -61,7 +65,7 @@ const PostForm = ({ post }: Props) => {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-9 w-full  max-w-5xl"
       >
         <FormField
@@ -141,14 +145,10 @@ const PostForm = ({ post }: Props) => {
           >
             Cancel
           </Button>
-          {/* <Button
-            type="submit"
-            className="shad-button_primary whitespace-nowrap"
-            disabled={isLoadingCreate || isLoadingUpdate}
-          >
-            {(isLoadingCreate || isLoadingUpdate) && <Loader />}
-            {action} Post
-          </Button> */}
+          <Button type="submit" className="">
+            {isLoadingCreate && <Loader />}
+            Post 2
+          </Button>
         </div>
       </form>
     </Form>
