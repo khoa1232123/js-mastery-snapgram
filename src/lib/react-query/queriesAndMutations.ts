@@ -23,3 +23,5 @@ export const useSignOutAccount = () => {
     mutationFn: signOutAccount,
   });
 };
+
+export const useCreatePost = () => {};
