@@ -16,17 +16,23 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useCreatePost } from "@/lib/react-query/queriesAndMutations";
+import {
+  useCreatePost,
+  useUpdatePost,
+} from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 import { useToast } from "../ui/use-toast";
 
 type Props = {
   post?: Models.Document;
+  action: "create" | "update";
 };
 
-const PostForm = ({ post }: Props) => {
+const PostForm = ({ post, action }: Props) => {
   const { mutateAsync: createPost, isLoading: isLoadingCreate } =
     useCreatePost();
+  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
+    useUpdatePost();
   const { user } = useUserContext();
   const { toast } = useToast();
 
@@ -44,22 +50,39 @@ const PostForm = ({ post }: Props) => {
 
   // 2. define a submit handler
   const handleSubmit = async (values: z.infer<typeof PostValidation>) => {
-    console.log("onSubmit");
-
-    const newPost = await createPost({
-      ...values,
-      userId: user.id,
-    });
-
-    console.log({ newPost });
-
-    if (!newPost) {
-      return toast({
-        title: "Please try again",
+    if (post && action === "update") {
+      const updatedPost = await updatePost({
+        ...values,
+        postId: post.$id,
+        imageId: post?.imageId,
+        imageUrl: post?.imageUrl,
       });
-    }
 
-    navigate("/");
+      if (!updatedPost) {
+        return toast({
+          title: "Please try again",
+        });
+      }
+      toast({
+        title: "You have successfully updated your post!",
+      });
+      return navigate(`/posts/${post.$id}`);
+    } else {
+      const newPost = await createPost({
+        ...values,
+        userId: user.id,
+      });
+
+      if (!newPost) {
+        return toast({
+          title: "Please try again",
+        });
+      }
+      toast({
+        title: "You have successfully created a post!",
+      });
+      return navigate(`/posts/${newPost.$id}`);
+    }
   };
 
   return (
@@ -145,9 +168,13 @@ const PostForm = ({ post }: Props) => {
           >
             Cancel
           </Button>
-          <Button type="submit" className="">
-            {isLoadingCreate && <Loader />}
-            Post 2
+          <Button
+            type="submit"
+            className="shad-button_primary capitalize"
+            disabled={isLoadingCreate || isLoadingUpdate}
+          >
+            {(isLoadingCreate || isLoadingUpdate) && <Loader />}
+            {action} Post
           </Button>
         </div>
       </form>

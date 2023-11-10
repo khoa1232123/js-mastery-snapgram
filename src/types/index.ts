@@ -30,6 +30,11 @@ export type INewPost = {
   tags?: string;
 };
 
+export type ISavePost = {
+  postId: string;
+  userId: string;
+};
+
 export type IUpdatePost = {
   postId: string;
   caption: string;
@@ -38,6 +43,15 @@ export type IUpdatePost = {
   file: File[];
   location?: string;
   tags?: string;
+};
+
+export type IDeletePost = {
+  postId: string;
+  imageId: string;
+};
+
+export type IInfinitePosts = {
+  pageParam: number;
 };
 
 export type IUser = {

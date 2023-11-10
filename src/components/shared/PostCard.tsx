@@ -11,6 +11,8 @@ type Props = {
 
 const PostCard = ({ post }: Props) => {
   const { user } = useUserContext();
+  console.log({ post });
+
   return (
     <div className="post-card">
       <div className="flex-between">
