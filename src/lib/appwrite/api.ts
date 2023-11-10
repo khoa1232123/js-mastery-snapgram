@@ -399,3 +399,19 @@ export const searchPosts = async (searchTerm: string) => {
     console.log(error);
   }
 };
+
+export const getSavedPosts = async (userId: string) => {
+  try {
+    const saves = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.saveCollectionId,
+      [Query.equal("user", userId)]
+    );
+
+    if (!saves) throw Error;
+
+    return saves;
+  } catch (error) {
+    console.log(error);
+  }
+};

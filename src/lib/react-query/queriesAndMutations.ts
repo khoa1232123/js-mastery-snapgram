@@ -21,6 +21,7 @@ import {
   getInfinitePosts,
   getPostById,
   getRecentPosts,
+  getSavedPosts,
   likePost,
   savePost,
   searchPosts,
@@ -127,6 +128,9 @@ export const useDeleteSavedPost = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_SAVED_POSTS],
+      });
     },
   });
 };
@@ -192,5 +196,13 @@ export const useSearchPosts = (searchTerm: string) => {
     queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
     queryFn: () => searchPosts(searchTerm),
     enabled: !!searchTerm,
+  });
+};
+
+export const useGetSavedPosts = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_SAVED_POSTS, userId],
+    queryFn: () => getSavedPosts(userId),
+    enabled: !!userId,
   });
 };
