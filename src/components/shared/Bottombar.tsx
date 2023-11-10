@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 type Props = {};
 
-const Bottombar = (props: Props) => {
+const Bottombar = ({}: Props) => {
   const { pathname } = useLocation();
   return (
     <section className="bottom-bar">

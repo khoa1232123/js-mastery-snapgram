@@ -1,9 +1,8 @@
 import { PostForm } from "@/components/forms";
-import React from "react";
 
 type Props = {};
 
-const CreatePost = (props: Props) => {
+const CreatePost = ({}: Props) => {
   return (
     <div className="flex flex-1">
       <div className="common-container">

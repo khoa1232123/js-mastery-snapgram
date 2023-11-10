@@ -2,16 +2,11 @@ import { Loader } from "@/components/shared";
 import PostCard from "@/components/shared/PostCard";
 import { useGetCurrentPosts } from "@/lib/react-query/queriesAndMutations";
 import { Models } from "appwrite";
-import React from "react";
 
 type Props = {};
 
-const Home = (props: Props) => {
-  const {
-    data: posts,
-    isLoading: isPostLoading,
-    isError: isErrorPosts,
-  } = useGetCurrentPosts();
+const Home = ({}: Props) => {
+  const { data: posts, isLoading: isPostLoading } = useGetCurrentPosts();
   console.log({ posts });
 
   return (

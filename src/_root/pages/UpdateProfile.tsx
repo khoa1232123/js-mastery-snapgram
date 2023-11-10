@@ -1,8 +1,6 @@
-import React from "react";
-
 type Props = {};
 
-const UpdateProfile = (props: Props) => {
+const UpdateProfile = ({}: Props) => {
   return <div>UpdateProfile</div>;
 };
 

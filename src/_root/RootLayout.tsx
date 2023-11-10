@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 type Props = {};
 
-const RootLayout = (props: Props) => {
+const RootLayout = ({}: Props) => {
   return (
     <div className="w-full md:flex">
       <Topbar />
